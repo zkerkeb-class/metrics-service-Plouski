@@ -1,0 +1,89 @@
+# Configuration Prometheus pour tous les microservices
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Configuration des targets à scraper
+scrape_configs:
+  # Prometheus lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # OPTION A : Si vos services utilisent tous le port 9090 pour les métriques
+  # (un seul service peut utiliser ce port à la fois)
+  
+  # Service AI (métriques sur port principal)
+  - job_name: 'ai-service'
+    static_configs:
+      - targets: ['localhost:5003']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: 'http'
+
+  # Service Auth (métriques sur port principal)
+  - job_name: 'auth-service'
+    static_configs:
+      - targets: ['localhost:5001']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: 'http'
+
+  # Service Data (métriques sur port principal)
+  - job_name: 'data-service'
+    static_configs:
+      - targets: ['localhost:5002']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: 'http'
+
+  # Service Notification (métriques sur port principal)
+  - job_name: 'notification-service'
+    static_configs:
+      - targets: ['localhost:5005']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: 'http'
+
+  # Service Paiement (métriques sur port principal)
+  - job_name: 'paiement-service'
+    static_configs:
+      - targets: ['localhost:5004']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: 'http'
+
+  # Service Metrics (métriques sur port principal)
+  - job_name: 'metrics-service'
+    static_configs:
+      - targets: ['localhost:5006']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scheme: 'http'
+
+  # OPTION B : Si vous utilisez Docker Compose
+  # Décommentez ceci et commentez l'OPTION A
+  
+  # - job_name: 'ai-service'
+  #   static_configs:
+  #     - targets: ['ai-service:5003']
+  
+  # - job_name: 'auth-service'
+  #   static_configs:
+  #     - targets: ['auth-service:5001']
+  
+  # - job_name: 'data-service'
+  #   static_configs:
+  #     - targets: ['data-service:5002']
+  
+  # - job_name: 'notification-service'
+  #   static_configs:
+  #     - targets: ['notification-service:5005']
+  
+  # - job_name: 'paiement-service'
+  #   static_configs:
+  #     - targets: ['paiement-service:5004']
+  
+  # - job_name: 'metrics-service'
+  #   static_configs:
+  #     - targets: ['metrics-service:5006']

@@ -1,0 +1,174 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "RoadTrip Microservices Dashboard",
+    "tags": ["microservices", "roadtrip"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Services Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "service_health_status",
+            "legendFormat": "{{service_name}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": { "text": "DOWN", "color": "red" },
+                  "1": { "text": "UP", "color": "green" }
+                },
+                "type": "value"
+              }
+            ]
+          }
+        },
+        "gridPos": {"h": 6, "w": 24, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "HTTP Requests per Second",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total[5m])",
+            "legendFormat": "{{job}} - {{method}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6}
+      },
+      {
+        "id": 3,
+        "title": "Response Time (95th percentile)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "{{job}} - 95th percentile"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6}
+      },
+      {
+        "id": 4,
+        "title": "Auth Service - Login Attempts",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(auth_attempts_total[5m])",
+            "legendFormat": "{{provider}} - {{status}}"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 8, "x": 0, "y": 14}
+      },
+      {
+        "id": 5,
+        "title": "Notification Service - Messages Sent",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(notifications_sent_total[5m])",
+            "legendFormat": "{{type}} - {{status}}"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 8, "x": 8, "y": 14}
+      },
+      {
+        "id": 6,
+        "title": "Payment Service - Transactions",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(payments_total[5m])",
+            "legendFormat": "{{status}} - {{provider}}"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 8, "x": 16, "y": 14}
+      },
+      {
+        "id": 7,
+        "title": "Database Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "database_status",
+            "legendFormat": "{{database_type}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": { "text": "DISCONNECTED", "color": "red" },
+                  "1": { "text": "CONNECTED", "color": "green" }
+                },
+                "type": "value"
+              }
+            ]
+          }
+        },
+        "gridPos": {"h": 4, "w": 12, "x": 0, "y": 20}
+      },
+      {
+        "id": 8,
+        "title": "Active Connections (Data Service)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "active_connections",
+            "legendFormat": "Active Connections"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 12, "x": 12, "y": 20}
+      },
+      {
+        "id": 9,
+        "title": "Error Rate by Service",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{status_code=~\"5..\"}[5m]) / rate(http_requests_total[5m]) * 100",
+            "legendFormat": "{{job}} - Error Rate %"
+          }
+        ],
+        "gridPos": {"h": 6, "w": 24, "x": 0, "y": 24}
+      },
+      {
+        "id": 10,
+        "title": "External Services Health",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "external_service_health",
+            "legendFormat": "{{service_name}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": { "text": "UNHEALTHY", "color": "red" },
+                  "1": { "text": "HEALTHY", "color": "green" }
+                },
+                "type": "value"
+              }
+            ]
+          }
+        },
+        "gridPos": {"h": 4, "w": 24, "x": 0, "y": 30}
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "5s"
+  }
+}
